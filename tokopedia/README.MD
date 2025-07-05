@@ -52,7 +52,7 @@ The script will store your Invoice PDFs into `invoice_pdf` folder
 ### Options
 
 - `--token <YOUR_TOKEN_HERE>`: specify your SID_TOKOPEDIA token
-- `''login`: run the login flow to get the token automatically
+- `--login`: run the login flow to get the token automatically
 
 ## Disclaimer
 
