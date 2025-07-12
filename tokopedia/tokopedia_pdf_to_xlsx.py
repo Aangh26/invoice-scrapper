@@ -2,7 +2,7 @@ import os
 import re
 from datetime import datetime
 import pandas as pd
-from pypdf import PdfReader
+from pypdf import PdfReader, PdfWriter
 from openpyxl.styles import Alignment, numbers
 # --- configurations ---
 # Indonesian month mapping
@@ -14,7 +14,11 @@ MONTH_MAP = {
 
 # Folder path
 PDF_DIR = "invoices_pdf"
-OUTPUT_FILE = f"{PDF_DIR}\\invoice_data.xlsx"
+PDF_MERGED_DIR = os.path.join(PDF_DIR, "merged_invoices")
+if not os.path.exists(PDF_MERGED_DIR):
+    os.makedirs(PDF_MERGED_DIR)
+PDF_MERGED_DIR = os.path.join(PDF_MERGED_DIR, "merged_invoices.pdf")
+OUTPUT_FILE = os.path.join(PDF_DIR,'invoice_data.xlsx')
 
 # --- script logic ---
 
@@ -70,7 +74,7 @@ def extract_invoice_data(text):
     }
 
 data = []
-
+merger = PdfWriter()
 # Loop through PDFs
 for filename in os.listdir(PDF_DIR):
     if filename.lower().endswith(".pdf"):
@@ -82,9 +86,11 @@ for filename in os.listdir(PDF_DIR):
                 text += page.extract_text() or ''
             invoice_info = extract_invoice_data(text)
             data.append(invoice_info)
+            merger.append(pdf_path)
         except Exception as e:
             print(f"Error reading {filename}: {e}")
-
+merger.write(PDF_MERGED_DIR)
+merger.close()
 # Create DataFrame
 df = pd.DataFrame(data)# Add 'transaction_dd-mm' column
 df['transaction_dd-mm'] = df['transaction_time'].dt.strftime('%d-%m')
