@@ -54,6 +54,12 @@ The script will store your Invoice PDFs into `invoice_pdf` folder
 - `--token <YOUR_TOKEN_HERE>`: specify your SID_TOKOPEDIA token
 - `--login`: run the login flow to get the token automatically
 
+### Transaction Summary
+To summarize the pdf into excel spreadsheet, run:
+```bash
+python tokopedia_pdf_to_xlsx.py
+```
+
 ## Disclaimer
 
 This tool is for personal use only. Please respect Tokopedia's Terms of Service.
